@@ -1,0 +1,20 @@
+.screen__login {
+    padding: 0 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #487453;
+    color: #EEF6EF;
+    border-radius: 0.625rem;
+}
+
+form {
+    min-height: 300px;
+    min-width: 280px;
+    padding: 0.313rem 0.625rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
