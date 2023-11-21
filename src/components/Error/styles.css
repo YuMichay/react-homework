@@ -1,0 +1,10 @@
+.error {
+  background-color: #EEF6EF;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: bold;
+  font-size: 0.8em;
+  color: #B22222;
+  padding: 0.313rem 0.625rem;
+  border-radius: 0.313rem;
+  transition: opacity 0.2s ease-in-out;
+}
