@@ -1,4 +1,5 @@
 .screen__login {
+    max-width: 320px;
     padding: 0 2rem 2rem;
     display: flex;
     flex-direction: column;
@@ -10,11 +11,37 @@
 }
 
 form {
-    min-height: 300px;
-    min-width: 280px;
+    max-width: 280px;
+    max-height: 300px;
     padding: 0.313rem 0.625rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+}
+
+form h2 {
+    margin: 0;
+}
+
+.login__localization button {
+    color: #c0c7c1;
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.login__localization button:hover {
+    text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 1px black;
+}
+
+.login__localization .active {
+    color: #EEF6EF;
+}
+
+.submit:hover:enabled {
+    box-shadow: -1px 0 #EEF6EF, 0 1px #EEF6EF, 1px 0 #EEF6EF, 0 -1px #EEF6EF;
+    background-color: #487453;
+    color: #EEF6EF;
 }

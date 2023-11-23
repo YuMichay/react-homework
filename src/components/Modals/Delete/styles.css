@@ -1,0 +1,36 @@
+.overlay {
+  position: fixed;
+  width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: black;
+  opacity: 0.6;
+}
+
+.delete__modal {
+  position: absolute;
+  width: 300px;
+  height: 180px;
+  top: 50%;
+  left: 50%;
+  margin-top: -90px;
+  margin-left: -150px;
+  padding: 0 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #487453;
+  color: #EEF6EF;
+  border-radius: 0.625rem;
+  text-align: center;
+}
+
+.delete__buttons {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.625rem;
+  justify-content: center;
+  align-items: center;
+}

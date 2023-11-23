@@ -12,9 +12,3 @@ button {
   color: #487453;
   transition: all 0.2s ease-in-out;
 }
-
-button:hover:enabled {
-  box-shadow: -1px 0 #EEF6EF, 0 1px #EEF6EF, 1px 0 #EEF6EF, 0 -1px #EEF6EF;
-  background-color: #487453;
-  color: #EEF6EF;
-}
