@@ -5,17 +5,14 @@ import {Button} from '../../components/Button/Button'
 import {Input} from '../../components/Input/Input'
 import {ErrorMessage} from '../../components/Error/Error'
 import {Typography} from '../../components/Typography/Typography'
-import {handleLocaleClick} from '../../helpers/handleLocale'
 import {useLocalization} from '../../hooks/useLocalization'
 import {state} from '../../state/state'
 
 export const LoginScreen = () => {
   const navigate = useNavigate()
 
-  // set locale
-  const context = useLocalization()
-  const [locale, setLocale] = useState(state.locale || 'en')
-  const localeValues = context[`${locale}`]
+  // get locale, values for elements with text and handle function for locale state
+  const {locale, localeValues, handleLocaleChange} = useLocalization()
 
   // states for error, username and password
   const [error, setError] = useState('')
@@ -62,12 +59,12 @@ export const LoginScreen = () => {
         <div className="login__localization">
           <Button
             buttonClass={locale === 'en' ? 'en active' : 'en'}
-            onClick={e => handleLocaleClick(e, setLocale)}
+            onClick={() => handleLocaleChange('en')}
             text={'en'}
           />
           <Button
             buttonClass={locale === 'ru' ? 'ru active' : 'ru'}
-            onClick={e => handleLocaleClick(e, setLocale)}
+            onClick={() => handleLocaleChange('ru')}
             text={'ru'}
           />
         </div>

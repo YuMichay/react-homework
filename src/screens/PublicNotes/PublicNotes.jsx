@@ -1,20 +1,14 @@
 import './styles.css'
-import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Typography} from '../../components/Typography/Typography'
 import {Button} from '../../components/Button/Button'
 import {mockNotes} from '../../mocks/mockData'
 import {Note} from '../../components/Note/Note'
 import {useLocalization} from '../../hooks/useLocalization'
-import {handleLocaleClick} from '../../helpers/handleLocale'
-import {state} from '../../state/state'
 
 export const PublicNotes = () => {
-  // set locale
-  const localeFromState = state.locale
-  const context = useLocalization()
-  const [locale, setLocale] = useState(localeFromState)
-  const localeValues = context[`${locale}`]
+  // get locale, values for elements with text and handle function for locale state
+  const {locale, localeValues, handleLocaleChange} = useLocalization()
 
   // TODO: change on requested data
   const publicNotes = mockNotes.filter(note => note.isPublic)
@@ -45,7 +39,7 @@ export const PublicNotes = () => {
         />
       </div>
       <div className="notes__wrapper">
-        {publicNotes
+        {publicNotes.length
           ? publicNotes.map(note => (
               <Note
                 key={note.id}
@@ -63,12 +57,12 @@ export const PublicNotes = () => {
       <div className="note__localization">
         <Button
           buttonClass={locale === 'en' ? 'en active' : 'en'}
-          onClick={e => handleLocaleClick(e, setLocale)}
+          onClick={() => handleLocaleChange('en')}
           text={'en'}
         />
         <Button
           buttonClass={locale === 'ru' ? 'ru active' : 'ru'}
-          onClick={e => handleLocaleClick(e, setLocale)}
+          onClick={() => handleLocaleChange('ru')}
           text={'ru'}
         />
       </div>

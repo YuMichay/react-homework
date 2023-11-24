@@ -7,15 +7,10 @@ import {Note} from '../../components/Note/Note'
 import {Button} from '../../components/Button/Button'
 import {CreateNoteModal} from '../../components/Modals/Create/CreateModal'
 import {useLocalization} from '../../hooks/useLocalization'
-import {handleLocaleClick} from '../../helpers/handleLocale'
-import {state} from '../../state/state'
 
 export const PrivateNotes = () => {
-  // set locale
-  const localeFromState = state.locale
-  const context = useLocalization()
-  const [locale, setLocale] = useState(localeFromState)
-  const localeValues = context[`${locale}`]
+  // get locale, values for elements with text and handle function for locale state
+  const {locale, localeValues, handleLocaleChange} = useLocalization()
 
   // TODO: change on requested data
   const privateNotes = mockNotes.filter(note => !note.isPublic)
@@ -52,30 +47,32 @@ export const PrivateNotes = () => {
         />
       </div>
       <div className="notes__wrapper">
-        {privateNotes.map(note => (
-          <Note
-            key={note.id}
-            color={note.color}
-            isPublic={note.isPublic}
-            owner={note.owner}
-            tags={note.tags}
-            text={note.text}
-            title={note.title}
-            id={note.id}
-            localeValues={localeValues}
-          />
-        ))}
+        {privateNotes.length
+          ? privateNotes.map(note => (
+              <Note
+                key={note.id}
+                color={note.color}
+                isPublic={note.isPublic}
+                owner={note.owner}
+                tags={note.tags}
+                text={note.text}
+                title={note.title}
+                id={note.id}
+                localeValues={localeValues}
+              />
+            ))
+          : ''}
         <Button buttonClass={'add'} type={'button'} onClick={handleCreateNote} />
       </div>
       <div className="note__localization">
         <Button
           buttonClass={locale === 'en' ? 'en active' : 'en'}
-          onClick={e => handleLocaleClick(e, setLocale)}
+          onClick={() => handleLocaleChange('en')}
           text={'en'}
         />
         <Button
           buttonClass={locale === 'ru' ? 'ru active' : 'ru'}
-          onClick={e => handleLocaleClick(e, setLocale)}
+          onClick={() => handleLocaleChange('ru')}
           text={'ru'}
         />
       </div>
