@@ -8,8 +8,12 @@ import {Button} from '../Button/Button'
 import {SYMB_AMOUNT} from '../../constants/constants'
 import {DeleteNoteModal} from '../Modals/Delete/DeleteModal'
 import {CreateNoteModal} from '../Modals/Create/CreateModal'
+import {useLocalization} from '../../hooks/useLocalization'
 
-export const Note = ({color, isPublic, owner, tags, text, title, id, localeValues}) => {
+export const Note = ({color, isPublic, owner, tags, text, title, id}) => {
+  // get locale, values for elements with text and handle function for locale state
+  const {localeValues} = useLocalization()
+
   // set background note's color
   const noteStyle = {
     backgroundColor: color,

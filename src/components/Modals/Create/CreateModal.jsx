@@ -9,9 +9,14 @@ import {generateId} from '../../../helpers/generateId'
 import {validateTags} from '../../../helpers/validateInput'
 import {Button} from '../../Button/Button'
 import {ErrorMessage} from '../../Error/Error'
+import {useLocalization} from '../../../hooks/useLocalization'
 
-export const CreateNoteModal = ({setModalState, values = {}, localeValues}) => {
+export const CreateNoteModal = ({setModalState, values = {}}) => {
   const [error, setError] = useState('')
+
+  // get locale, values for elements with text and handle function for locale state
+  const {localeValues} = useLocalization()
+
   // create all the values
   const [color, setColor] = useState(values.color || '#ffffff')
   const [isPublic, setIsPublic] = useState(values.isPublic || false)

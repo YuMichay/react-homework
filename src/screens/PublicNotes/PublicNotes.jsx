@@ -49,7 +49,6 @@ export const PublicNotes = () => {
                 tags={note.tags}
                 text={note.text}
                 title={note.title}
-                localeValues={localeValues}
               />
             ))
           : ''}

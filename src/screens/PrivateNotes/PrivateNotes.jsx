@@ -58,7 +58,6 @@ export const PrivateNotes = () => {
                 text={note.text}
                 title={note.title}
                 id={note.id}
-                localeValues={localeValues}
               />
             ))
           : ''}
@@ -76,9 +75,7 @@ export const PrivateNotes = () => {
           text={'ru'}
         />
       </div>
-      {showCreateModal && (
-        <CreateNoteModal setModalState={setShowCreateModal} localeValues={localeValues} />
-      )}
+      {showCreateModal && <CreateNoteModal setModalState={setShowCreateModal} />}
     </div>
   )
 }

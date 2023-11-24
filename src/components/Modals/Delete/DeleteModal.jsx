@@ -1,8 +1,12 @@
 import './styles.css'
 import {Typography} from '../../Typography/Typography'
 import {Button} from '../../Button/Button'
+import {useLocalization} from '../../../hooks/useLocalization'
 
-export const DeleteNoteModal = ({setModalState, localeValues}) => {
+export const DeleteNoteModal = ({setModalState}) => {
+  // get locale, values for elements with text and handle function for locale state
+  const {localeValues} = useLocalization()
+
   // handle overlay and cancel click
   const handleCancelClick = () => {
     setModalState(false)
