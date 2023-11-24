@@ -97,9 +97,7 @@ export const Note = ({color, isPublic, owner, tags, text, title, id}) => {
         </div>
       )}
       <Typography type={'p'}>{'by ' + owner}</Typography>
-      {isShownDeleteModal && (
-        <DeleteNoteModal setModalState={setIsShownDeleteModal} localeValues={localeValues} />
-      )}
+      {isShownDeleteModal && <DeleteNoteModal setModalState={setIsShownDeleteModal} />}
       {isShownCreateModal && (
         <CreateNoteModal
           values={{
@@ -112,7 +110,6 @@ export const Note = ({color, isPublic, owner, tags, text, title, id}) => {
             id: id,
           }}
           setModalState={setIsShownCreateModal}
-          localeValues={localeValues}
         />
       )}
     </div>
