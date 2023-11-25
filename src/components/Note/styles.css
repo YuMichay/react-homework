@@ -1,0 +1,86 @@
+.notes__note {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 16rem;
+  height: fit-content;
+  padding: 1rem;
+  border-radius: 0.313rem;
+}
+
+.notes__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.625rem;
+}
+
+.notes__title img {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.025rem;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.heart-icon {
+  cursor: pointer;
+  margin-right: 0.313rem;
+}
+
+.more {
+  margin-top: 0;
+  padding: 0 0.313rem;
+  font-size: 0.9em;
+  box-shadow: none;
+  border-radius: 0%;
+  color: black;
+}
+
+.more:hover {
+  text-shadow: 1px 0 #c0c7c1, 0 1px #c0c7c1, 1px 0 #c0c7c1, 0 1px #c0c7c1;
+}
+
+.note__buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.625rem;
+}
+
+.delete,
+.edit {
+  width: 2rem;
+  height: 2rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  background-color: transparent;
+  box-shadow: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.delete {
+  background-image: url('../../assets/trash-2.svg');
+}
+
+.edit {
+  background-image: url('../../assets/edit.svg');
+}
+
+.delete:hover,
+.edit:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 524.99px) {
+  .notes__note {
+    width: 11rem;
+  }
+}
+
+@media (max-width: 374.99px) {
+  .notes__note {
+    width: 9rem;
+  }
+}

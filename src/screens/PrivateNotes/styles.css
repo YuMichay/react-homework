@@ -1,0 +1,132 @@
+.screen__notes {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template:
+  "header header"
+  "aside notes"
+  "footer footer";
+  grid-template-rows: 5rem auto 3rem;
+  grid-template-columns: 10rem auto;
+}
+
+.notes__header {
+  grid-area: header;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #487453;
+  color: #EEF6EF;
+}
+
+.note__localization {
+  grid-area: footer;
+  background-color: #487453;
+}
+
+.note__localization button {
+  color: #c0c7c1;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.note__localization button:hover {
+  text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 1px black;
+}
+
+.note__localization .active {
+  color: #EEF6EF;
+}
+
+.logout,
+.public {
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.logout {
+  width: 3rem;
+  height: 3rem;
+  background-image: url('../../assets/log-out.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+}
+
+.logout:hover {
+  box-shadow: -1px 0 #EEF6EF, 0 1px #EEF6EF, 1px 0 #EEF6EF, 0 -1px #EEF6EF;
+}
+
+.public:hover {
+  text-shadow: 1px 0 #c0c7c1, 0 1px #c0c7c1, 1px 0 #c0c7c1, 0 1px #c0c7c1;
+}
+
+.notes__aside {
+  grid-area: aside;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.625rem;
+  color: #487453;
+  background-color: #EEF6EF;
+}
+
+.note__localization {
+  display: flex;
+  flex-direction: row;
+}
+
+.notes__wrapper {
+  grid-area: notes;
+  padding: 1.125rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 0.625rem;
+}
+
+.add {
+  width: 18rem;
+  height: 13rem;
+  background-image: url('../../assets/plus-square.svg');
+  background-repeat: no-repeat;
+  background-size: 2rem;
+  background-position: center;
+  box-shadow: none;
+}
+
+.add:hover {
+  background-color: #c0c7c1;
+}
+
+@media (max-width: 524.99px) {
+  .add {
+    width: 13rem;
+  }
+
+  .screen__notes {
+    grid-template-columns: 8rem auto;
+  }
+}
+
+@media (max-width: 374.99px) {
+  .add {
+    width: 11rem;
+  }
+
+  .screen__notes {
+    grid-template-columns: 7rem auto;
+  }
+
+  .notes__wrapper {
+    padding: 0.625rem;
+  }
+}
