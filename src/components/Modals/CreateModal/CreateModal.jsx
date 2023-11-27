@@ -14,7 +14,7 @@ import {useLocalization} from '../../../hooks/useLocalization'
 export const CreateNoteModal = ({setModalState, values = {}}) => {
   const [error, setError] = useState('')
 
-  // get locale, values for elements with text and handle function for locale state
+  // get values for elements with text
   const {localeValues} = useLocalization()
 
   // create all the values
@@ -79,7 +79,7 @@ export const CreateNoteModal = ({setModalState, values = {}}) => {
   }
 
   return (
-    <div>
+    <>
       <div className="overlay" onClick={handleCancelClick}></div>
       <div className="create__modal">
         <Typography type={'h2'}>{localeValues.newNote}</Typography>
@@ -113,6 +113,6 @@ export const CreateNoteModal = ({setModalState, values = {}}) => {
           <Button buttonClass={'submit'} type={'submit'} text={localeValues.submit} />
         </form>
       </div>
-    </div>
+    </>
   )
 }

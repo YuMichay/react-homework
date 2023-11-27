@@ -39,7 +39,7 @@ export const mockNotes = [
     color: 'steelblue',
     isPublic: true,
     owner: 'YuMichay',
-    tags: ['notes', 'public'],
+    tags: ['notes', 'public', 'public', 'public', 'public', 'public', 'public', 'public'],
     text: 'This is a public note. Everyone can see it!',
     title: 'My first note',
     id: 5,

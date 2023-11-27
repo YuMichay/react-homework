@@ -1,0 +1,28 @@
+.note__details {
+  grid-area: notes;
+  padding: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 0.625rem;
+  color: #487453;
+}
+
+.note__details h2 {
+  margin: 0;
+}
+
+.note__details p {
+  padding: 0.313rem;
+}
+
+.note__details span {
+  padding: 0.313rem;
+  margin: 0;
+  word-wrap: break-word;
+  background-color: #EEF6EF;
+  border-bottom: 0.0625rem solid black;
+  border-radius: 0.313rem;
+}

@@ -10,6 +10,8 @@ export const Typography = ({type, children}) => {
       return <h3>{children}</h3>
     case 'h4':
       return <h4>{children}</h4>
+    case 'h6':
+      return <h6>{children}</h6>
     case 'p':
       return <p>{children}</p>
     case 'span':

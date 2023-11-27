@@ -8,6 +8,7 @@ export const en = {
   newNote: 'New note',
   public: 'Public',
   private: 'Private',
+  favorite: 'favorite',
   cancel: 'Cancel',
   confirm: 'Confirm',
   deleteMessage: 'Are you sure you want to delete this note?',
@@ -16,4 +17,11 @@ export const en = {
   tagsFormat: 'tags in format: tag, tag, tag',
   title: 'title',
   text: 'text',
+  errorPageHeader: 'Oops!',
+  errorPageMessage: 'Sorry, an unexpected error has occurred.',
+  newPassword: 'new password',
+  changePasswordScreen: 'Change password',
+  errorPassword:
+    'Valid format: 16 symbols (numbers and latin letters), including at least 1 capital letter and 1 lowercase letter',
+  changedPasswordMessage: 'Password was successfully changed!',
 }

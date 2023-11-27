@@ -1,18 +1,30 @@
 import './styles.css'
 import {useState} from 'react'
+import {useNavigate, useOutletContext} from 'react-router-dom'
 import {Typography} from '../Typography/Typography'
 import privateNote from '../../assets/lock.svg'
 import heartIcon from '../../assets/heart.svg'
 import heartFilledIcon from '../../assets/heart-filled.svg'
 import {Button} from '../Button/Button'
 import {SYMB_AMOUNT} from '../../constants/constants'
-import {DeleteNoteModal} from '../Modals/Delete/DeleteModal'
-import {CreateNoteModal} from '../Modals/Create/CreateModal'
-import {useLocalization} from '../../hooks/useLocalization'
+import {DeleteNoteModal} from '../Modals/DeleteModal/DeleteModal'
+import {CreateNoteModal} from '../Modals/CreateModal/CreateModal'
+import {state} from '../../state/state'
 
-export const Note = ({color, isPublic, owner, tags, text, title, id}) => {
-  // get locale, values for elements with text and handle function for locale state
-  const {localeValues} = useLocalization()
+export const Note = ({
+  color,
+  isPublic,
+  owner,
+  tags,
+  text,
+  title,
+  id,
+  setIsUpdatedFavorite = null,
+}) => {
+  const navigate = useNavigate()
+
+  // get locale values for elements with text
+  const localeValues = useOutletContext()
 
   // set background note's color
   const noteStyle = {
@@ -24,21 +36,27 @@ export const Note = ({color, isPublic, owner, tags, text, title, id}) => {
     marginBottom: '3.25rem',
   }
 
-  // TAGS: create a string of tags
-  const tagsString = tags.map(tag => `#${tag}`).join(' ')
+  // TAGS: show certain amount of symbols
+  const tagsShown =
+    tags.length > 3
+      ? tags
+          .map(tag => `#${tag} `)
+          .filter((_, index) => index < 3)
+          .join(' ') + '...'
+      : tags.map(tag => `#${tag} `)
 
   // TEXT FIELD: show certain amount of symbols
-  const [isHidenText, setIsHidenText] = useState(text.length > SYMB_AMOUNT)
   const textShown =
-    text
-      .split('')
-      .slice(0, SYMB_AMOUNT - 1)
-      .join('') + '...'
+    text.length < SYMB_AMOUNT
+      ? text
+      : text
+          .split('')
+          .slice(0, SYMB_AMOUNT - 1)
+          .join('') + '...'
 
-  // change text state and size of the note after "more" click
-  const handleToggleText = () => {
-    if (text.length < SYMB_AMOUNT) return
-    setIsHidenText(!isHidenText)
+  // NOTE DETAILS MODAL: change text and tags state and size of the note after "more" click
+  const handleToggleNote = () => {
+    navigate(`/notes/${id}`)
   }
 
   // DELETE MODAL: handle click on delete button
@@ -53,11 +71,14 @@ export const Note = ({color, isPublic, owner, tags, text, title, id}) => {
     setIsShownCreateModal(!isShownCreateModal)
   }
 
-  // PUBLIC NOTE: add/delete favorite note
-  const [isFavorite, setIsFavorite] = useState(false)
-  const handleToggleFavorites = () => {
-    const value = !isFavorite
-    setIsFavorite(value)
+  // FAVORITE NOTES: ids
+  const [isFavorite, setIsFavorite] = useState(state.favoriteNotesIds.indexOf(id) !== -1)
+  const handleToggleFavorite = () => {
+    setIsFavorite(!isFavorite)
+    if (setIsUpdatedFavorite) setIsUpdatedFavorite(false)
+    isFavorite
+      ? state.favoriteNotesIds.splice(state.favoriteNotesIds.indexOf(id), 1)
+      : state.favoriteNotesIds.push(id)
   }
 
   return (
@@ -71,24 +92,23 @@ export const Note = ({color, isPublic, owner, tags, text, title, id}) => {
               src={isFavorite ? heartFilledIcon : heartIcon}
               alt="heart"
               className="heart-icon"
-              onClick={handleToggleFavorites}></img>
+              onClick={handleToggleFavorite}></img>
           )}
           {!isPublic && <img src={privateNote} alt="lock"></img>}
         </div>
       </div>
 
       <div style={isPublic ? publicNoteStyle : null}>
-        <Typography type={'p'}>
-          {isHidenText ? textShown : text}
-          <Button
-            buttonClass={'more'}
-            type={'button'}
-            onClick={handleToggleText}
-            text={localeValues.readMore}
-          />
-        </Typography>
-        <Typography type={'span'}>{tagsString}</Typography>
+        <Typography type={'p'}>{textShown}</Typography>
+        <Typography type={'span'}>{tagsShown}</Typography>
       </div>
+
+      <Button
+        buttonClass={'more'}
+        type={'button'}
+        onClick={handleToggleNote}
+        text={localeValues.readMore}
+      />
 
       {!isPublic && (
         <div className="note__buttons">
