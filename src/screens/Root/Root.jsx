@@ -5,8 +5,9 @@ import {state} from '../../state/state'
 import {useLocalization} from '../../hooks/useLocalization'
 import {Typography} from '../../components/Typography/Typography'
 import {Button} from '../../components/Button/Button'
+import {withLogger} from '../../hoc/withLogger'
 
-export const Root = () => {
+const Root = () => {
   // get locale, values for elements with text and handle function for locale state
   const {locale, localeValues, handleLocaleChange} = useLocalization()
 
@@ -21,6 +22,9 @@ export const Root = () => {
   const handleLogout = () => {
     navigate('/login')
     state.isAuthorized = false
+    state.user = ''
+    state.favoriteNotesIds = []
+    localStorage.removeItem('token')
   }
 
   useEffect(() => {
@@ -69,3 +73,5 @@ export const Root = () => {
     </div>
   )
 }
+
+export const ProtectedRoot = withLogger(Root)
