@@ -1,10 +1,10 @@
 .create__modal {
-  position: absolute;
+  position: fixed;
   width: 240px;
   height: 580px;
   top: 50%;
   left: 50%;
-  margin-top: -265px;
+  margin-top: -275px;
   margin-left: -152px;
   padding: 0 1.125rem;
   display: flex;
@@ -40,10 +40,15 @@
   border: none;
 }
 
+@media (max-width: 1023.99px) {
+  .create__modal {
+    margin-top: -300px;
+  }
+}
+
 @media (max-width: 524.99px) {
   .create__modal {
-    width: 210px;
-    margin-left: -121px;
-    margin-top: -270px;
+    margin-left: -141px;
+    margin-top: -285px;
   }
 }

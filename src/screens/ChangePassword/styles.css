@@ -1,0 +1,8 @@
+.screen__password {
+  margin: 0.313rem auto;
+}
+
+.screen__password form input[type="text"] {
+  font-family: 'Roboto Mono', monospace;
+  color: #487453;
+}

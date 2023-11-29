@@ -4,7 +4,7 @@ import {Button} from '../../Button/Button'
 import {useLocalization} from '../../../hooks/useLocalization'
 
 export const DeleteNoteModal = ({setModalState}) => {
-  // get locale, values for elements with text and handle function for locale state
+  // get values for elements with text
   const {localeValues} = useLocalization()
 
   // handle overlay and cancel click

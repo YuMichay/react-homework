@@ -40,8 +40,10 @@ export const LoginScreen = () => {
     if (username === 'username' && password === '1111') {
       setError('')
       navigate('/private-notes')
+      state.isAuthorized = true
     } else {
       setError('Invalid username or password!')
+      state.isAuthorized = false
     }
   }
 

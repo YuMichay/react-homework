@@ -8,6 +8,7 @@ export const ru = {
   newNote: 'Новая заметка',
   public: 'Общие',
   private: 'Личные',
+  favorite: 'избранные',
   cancel: 'Отменить',
   confirm: 'Подтвердить',
   deleteMessage: 'Вы уверены, что хотите удалить заметку?',
@@ -16,4 +17,11 @@ export const ru = {
   tagsFormat: 'Теги в формате: тег, тег, тег',
   title: 'заголовок',
   text: 'текст',
+  errorPageHeader: 'Упс!',
+  errorPageMessage: 'Извините, произошла непредвиденная ошибка.',
+  newPassword: 'новый пароль',
+  changePasswordScreen: 'Изменить пароль',
+  errorPassword:
+    'Валидный формат: 16 символов (цифр и латинских букв), включая хотя бы 1 заглавную и 1 строчную буквы',
+  changedPasswordMessage: 'Пароль был успешно изменен!',
 }
