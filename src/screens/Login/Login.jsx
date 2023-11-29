@@ -7,8 +7,10 @@ import {ErrorMessage} from '../../components/Error/Error'
 import {Typography} from '../../components/Typography/Typography'
 import {useLocalization} from '../../hooks/useLocalization'
 import {state} from '../../state/state'
+import {getJSON} from '../../helpers/getJSON'
+import {withLogger} from '../../hoc/withLogger'
 
-export const LoginScreen = () => {
+const LoginScreen = () => {
   const navigate = useNavigate()
 
   // get locale, values for elements with text and handle function for locale state
@@ -33,16 +35,22 @@ export const LoginScreen = () => {
     setError('')
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
 
-    // TODO: change values on requested data
-    if (username === 'username' && password === '1111') {
-      setError('')
-      navigate('/private-notes')
-      state.isAuthorized = true
-    } else {
-      setError('Invalid username or password!')
+    try {
+      const token = await getJSON(username, password)
+      if (token) {
+        setError('')
+        navigate('/private-notes')
+        state.isAuthorized = true
+        localStorage.setItem('token', token)
+      } else {
+        setError('Invalid username or password!')
+        state.isAuthorized = false
+      }
+    } catch (err) {
+      setError('Authentication failed: ', err)
       state.isAuthorized = false
     }
   }
@@ -74,3 +82,5 @@ export const LoginScreen = () => {
     </div>
   )
 }
+
+export const ProtectedLoginScreen = withLogger(LoginScreen)

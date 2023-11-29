@@ -1,6 +1,6 @@
 import {createBrowserRouter} from 'react-router-dom'
-import {Root} from '../screens/Root/Root'
-import {LoginScreen} from '../screens/Login/Login'
+import {ProtectedRoot} from '../screens/Root/Root'
+import {ProtectedLoginScreen} from '../screens/Login/Login'
 import ErrorPage from '../components/ErrorPage/ErrorPage'
 import {PrivateNotes} from '../screens/PrivateNotes/PrivateNotes'
 import {PublicNotes} from '../screens/PublicNotes/PublicNotes'
@@ -11,7 +11,7 @@ import {ChangePassword} from '../screens/ChangePassword/ChangePassword'
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: <ProtectedRoot />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <LoginScreen />,
+    element: <ProtectedLoginScreen />,
     errorElement: <ErrorPage />,
   },
 ])
