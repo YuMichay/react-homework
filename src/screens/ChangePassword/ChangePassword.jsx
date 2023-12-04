@@ -1,5 +1,4 @@
 import './styles.css'
-import {useState} from 'react'
 import {ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {Button} from '../../components/Button/Button'
@@ -7,20 +6,23 @@ import {Input} from '../../components/Input/Input'
 import {validatePassword} from '../../helpers/validateInput'
 import {ErrorMessage} from '../../components/Error/Error'
 import {useOutletContext} from 'react-router-dom'
+import {useSelector} from 'react-redux'
+// import {setPassword, setError} from '../../Redux/slices/userSlice'
 
 export const ChangePassword = () => {
-  // get locale, values for elements with text and handle function for locale state
+  // get values for elements with text ain locale state
   const localeValues = useOutletContext()
+  const {password, error} = useSelector(state => state.user)
+  // const dispatch = useDispatch()
 
-  const [error, setError] = useState('')
-  const [password, setPassword] = useState('')
   const notify = () => toast.success(localeValues.changedPasswordMessage)
 
   // TODO: send request with data
   const handlePasswordChange = e => {
     const value = e.target.value
-    setPassword(value)
-    setError('')
+    // dispatch(setPassword(value))
+    // dispatch(setError(''))
+    console.log(value)
   }
 
   const handleSubmit = e => {
@@ -31,10 +33,11 @@ export const ChangePassword = () => {
     const isValid = validatePassword(newPassword)
 
     if (isValid && newPassword !== oldPassword) {
-      setError('')
+      // dispatch(setError(''))
       notify()
     } else {
-      setError(localeValues.errorPassword)
+      // dispatch(setError(localeValues.errorPassword))
+      console.log(localeValues.errorPassword)
     }
   }
 

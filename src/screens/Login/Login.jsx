@@ -1,57 +1,46 @@
 import './styles.css'
-import {useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {Button} from '../../components/Button/Button'
 import {Input} from '../../components/Input/Input'
 import {ErrorMessage} from '../../components/Error/Error'
 import {Typography} from '../../components/Typography/Typography'
 import {useLocalization} from '../../hooks/useLocalization'
-import {state} from '../../state/state'
-import {getJSON} from '../../helpers/getJSON'
 import {withLogger} from '../../hoc/withLogger'
+import {setUser, setPassword, setError} from '../../Redux/slices/userSlice'
+import {authorizeUser} from '../../Redux/thunks/loginThunk'
+import {Loading} from '../Loading/Loading'
+import {PRIVATE_NOTES} from '../../constants/constants'
 
 const LoginScreen = () => {
+  const {username, password, isLoading, error} = useSelector(state => state.user)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   // get locale, values for elements with text and handle function for locale state
   const {locale, localeValues, handleLocaleChange} = useLocalization()
 
-  // states for error, username and password
-  const [error, setError] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
   // handlers for username, password and login button
   const handleUsernameChange = e => {
     const value = e.target.value
-    setUsername(value)
-    state.username = value
-    setError('')
+    dispatch(setUser(value))
+    dispatch(setError(''))
   }
 
   const handlePasswordChange = e => {
     const value = e.target.value
-    setPassword(value)
-    setError('')
+    dispatch(setPassword(value))
+    dispatch(setError(''))
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
 
     try {
-      const token = await getJSON(username, password)
-      if (token) {
-        setError('')
-        navigate('/private-notes')
-        state.isAuthorized = true
-        localStorage.setItem('token', token)
-      } else {
-        setError('Invalid username or password!')
-        state.isAuthorized = false
-      }
+      const result = await dispatch(authorizeUser({username, password}))
+      if (result) navigate(PRIVATE_NOTES)
     } catch (err) {
-      setError('Authentication failed: ', err)
-      state.isAuthorized = false
+      dispatch(setError(err))
     }
   }
 
@@ -69,16 +58,23 @@ const LoginScreen = () => {
         <div className="login__localization">
           <Button
             buttonClass={locale === 'en' ? 'en active' : 'en'}
-            onClick={() => handleLocaleChange('en')}
+            onClick={e => {
+              e.preventDefault()
+              handleLocaleChange('en')
+            }}
             text={'en'}
           />
           <Button
             buttonClass={locale === 'ru' ? 'ru active' : 'ru'}
-            onClick={() => handleLocaleChange('ru')}
+            onClick={e => {
+              e.preventDefault()
+              handleLocaleChange('ru')
+            }}
             text={'ru'}
           />
         </div>
       </form>
+      {isLoading && <Loading />}
     </div>
   )
 }

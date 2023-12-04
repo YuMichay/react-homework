@@ -1,25 +1,22 @@
 import {useEffect, useState} from 'react'
 import {Note} from '../../components/Note/Note'
-import {mockNotes} from '../../mocks/mockData'
-import {state} from '../../state/state'
+import {useSelector} from 'react-redux'
 
 export const FavoriteNotes = () => {
+  const favoriteNotesIds = useSelector(state => state.publicNotes.favoriteNotesIds)
+  const notes = useSelector(state => state.publicNotes.notes)
   const [isUpdatedFavorite, setIsUpdatedFavorite] = useState()
   const [favoriteNotes, setFavoriteNotes] = useState(
-    state.favoriteNotesIds.map(favoriteNotesId =>
-      mockNotes.find(mockNote => mockNote.id === favoriteNotesId)
-    )
+    favoriteNotesIds.map(favoriteNotesId => notes.find(note => note.id === favoriteNotesId))
   )
 
   useEffect(() => {
     if (isUpdatedFavorite) return
     setFavoriteNotes(
-      state.favoriteNotesIds.map(favoriteNotesId =>
-        mockNotes.find(mockNote => mockNote.id === favoriteNotesId)
-      )
+      favoriteNotesIds.map(favoriteNotesId => notes.find(note => note.id === favoriteNotesId))
     )
     setIsUpdatedFavorite(true)
-  }, [isUpdatedFavorite])
+  }, [favoriteNotesIds, isUpdatedFavorite, notes])
 
   return (
     <>

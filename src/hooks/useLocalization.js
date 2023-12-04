@@ -1,7 +1,8 @@
-import {createContext, useContext, useState} from 'react'
+import {createContext, useContext} from 'react'
 import {en} from '../localization/en'
 import {ru} from '../localization/ru'
-import {state} from '../state/state'
+import {useDispatch, useSelector} from 'react-redux'
+import {change} from '../Redux/slices/appSlice'
 
 const locales = {
   en,
@@ -11,12 +12,12 @@ const locales = {
 const LocalizationContext = createContext(locales)
 
 export const useLocalization = () => {
+  const locale = useSelector(state => state.app.locale)
+  const dispatch = useDispatch()
   const context = useContext(LocalizationContext)
-  const [locale, setLocale] = useState(state.locale || 'en')
 
   const handleLocaleChange = newLocale => {
-    setLocale(newLocale)
-    state.locale = newLocale
+    dispatch(change(newLocale))
   }
 
   return {locale, localeValues: context[locale], handleLocaleChange}

@@ -1,9 +1,12 @@
 import './styles.css'
+import {useDispatch} from 'react-redux'
 import {Typography} from '../../Typography/Typography'
 import {Button} from '../../Button/Button'
 import {useLocalization} from '../../../hooks/useLocalization'
+import {remove} from '../../../Redux/slices/privateNotesSlice'
 
 export const DeleteNoteModal = ({setModalState}) => {
+  const dispatch = useDispatch()
   // get values for elements with text
   const {localeValues} = useLocalization()
 
@@ -14,7 +17,7 @@ export const DeleteNoteModal = ({setModalState}) => {
 
   const handleConfirmClick = () => {
     setModalState(false)
-    console.log('Note is deleted')
+    dispatch(remove())
   }
 
   return (
