@@ -3,12 +3,12 @@ import {useMatch, Outlet} from 'react-router-dom'
 import {Note} from '../../components/Note/Note'
 import {useLocalization} from '../../hooks/useLocalization'
 import {useSelector} from 'react-redux'
-import {FAVORITE, PUBLIC_NOTES} from '../../constants/constants'
+import {ROUTES} from '../../constants/constants'
 
 export const PublicNotes = () => {
   const {localeValues} = useLocalization()
   const {notes} = useSelector(state => state.publicNotes)
-  const isFavoritePage = useMatch(`${PUBLIC_NOTES}/${FAVORITE}`)
+  const isFavoritePage = useMatch(`${ROUTES.PUBLIC_NOTES}/${ROUTES.FAVORITE}`)
 
   return (
     <div className="notes__wrapper">

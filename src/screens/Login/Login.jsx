@@ -10,7 +10,7 @@ import {withLogger} from '../../hoc/withLogger'
 import {setUser, setPassword, setError} from '../../Redux/slices/userSlice'
 import {authorizeUser} from '../../Redux/thunks/loginThunk'
 import {Loading} from '../Loading/Loading'
-import {PRIVATE_NOTES} from '../../constants/constants'
+import {ROUTES} from '../../constants/constants'
 
 const LoginScreen = () => {
   const {username, password, isLoading, error} = useSelector(state => state.user)
@@ -38,7 +38,7 @@ const LoginScreen = () => {
 
     try {
       const result = await dispatch(authorizeUser({username, password}))
-      if (result) navigate(PRIVATE_NOTES)
+      if (result) navigate(ROUTES.PRIVATE_NOTES)
     } catch (err) {
       dispatch(setError(err))
     }
