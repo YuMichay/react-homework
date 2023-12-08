@@ -7,34 +7,33 @@ import {Input} from '../../components/Input/Input'
 import {validatePassword} from '../../helpers/validateInput'
 import {ErrorMessage} from '../../components/Error/Error'
 import {useOutletContext} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 
 export const ChangePassword = () => {
-  // get locale, values for elements with text and handle function for locale state
+  // get values for elements with text in locale state
   const localeValues = useOutletContext()
 
-  const [error, setError] = useState('')
-  const [password, setPassword] = useState('')
+  const {password, error} = useSelector(state => state.user)
+  const [newPassword, setNewPassword] = useState('')
+
   const notify = () => toast.success(localeValues.changedPasswordMessage)
 
-  // TODO: send request with data
   const handlePasswordChange = e => {
     const value = e.target.value
-    setPassword(value)
-    setError('')
+    setNewPassword(value)
+    console.log(value)
   }
 
+  // TODO: send request with data
   const handleSubmit = e => {
     e.preventDefault()
-    // TODO: get real password
-    const oldPassword = '275hdfvkudHw1275'
-    const newPassword = password
+    const oldPassword = password
     const isValid = validatePassword(newPassword)
 
     if (isValid && newPassword !== oldPassword) {
-      setError('')
       notify()
     } else {
-      setError(localeValues.errorPassword)
+      console.log(localeValues.errorPassword)
     }
   }
 

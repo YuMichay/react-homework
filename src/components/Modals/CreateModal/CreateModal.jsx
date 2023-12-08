@@ -10,8 +10,12 @@ import {validateTags} from '../../../helpers/validateInput'
 import {Button} from '../../Button/Button'
 import {ErrorMessage} from '../../Error/Error'
 import {useLocalization} from '../../../hooks/useLocalization'
+import {useDispatch, useSelector} from 'react-redux'
+import {add, edit} from '../../../Redux/slices/privateNotesSlice'
 
 export const CreateNoteModal = ({setModalState, values = {}}) => {
+  const {username} = useSelector(state => state.user)
+  const dispatch = useDispatch()
   const [error, setError] = useState('')
 
   // get values for elements with text
@@ -55,21 +59,22 @@ export const CreateNoteModal = ({setModalState, values = {}}) => {
     setTags(value)
   }
 
-  // TODO: add API request to add data and actual username
   // create note data
   const handleSubmit = e => {
     e.preventDefault()
-    const newNoteId = values.id || generateId()
+
+    const noteId = values.id || generateId()
+    const tagsEdited = Array.isArray(tags) ? tags : tags.split(', ')
     const newNote = {
       color: color,
       isPublic: isPublic,
-      owner: 'username',
-      tags: tags,
+      owner: username,
+      tags: tagsEdited,
       text: text,
       title: title,
-      id: newNoteId,
+      id: noteId,
     }
-    console.log(newNote)
+    values.id ? dispatch(edit(newNote)) : dispatch(add(newNote))
     setModalState(false)
   }
 

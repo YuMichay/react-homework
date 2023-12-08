@@ -1,13 +1,12 @@
 import './styles.css'
 import {useState} from 'react'
-import {mockNotes} from '../../mocks/mockData'
 import {Note} from '../../components/Note/Note'
 import {Button} from '../../components/Button/Button'
 import {CreateNoteModal} from '../../components/Modals/CreateModal/CreateModal'
+import {useSelector} from 'react-redux'
 
 export const PrivateNotes = () => {
-  // TODO: change on requested data
-  const privateNotes = mockNotes.filter(note => !note.isPublic)
+  const privateNotes = useSelector(state => state.privateNotes.notes)
 
   // CREATE MODAL: handle click on add button
   const [showCreateModal, setShowCreateModal] = useState(false)

@@ -1,11 +1,14 @@
-import {useParams} from 'react-router-dom'
-import {mockNotes} from '../../mocks/mockData'
-import {Typography} from '../../components/Typography/Typography'
 import './styles.css'
+import {useParams} from 'react-router-dom'
+import {Typography} from '../../components/Typography/Typography'
+import {useSelector} from 'react-redux'
 
 export const NoteDetails = () => {
   const {id} = useParams()
-  const note = mockNotes.find(mockNote => mockNote.id === +id)
+  const notes = useSelector(state => state.privateNotes.notes).concat(
+    useSelector(state => state.publicNotes.notes)
+  )
+  const note = notes.find(note => note.id.toString() === id)
   const tags = note.tags.map(tag => `#${tag} `)
 
   return (

@@ -1,37 +1,42 @@
 import './styles.css'
 import {useEffect} from 'react'
 import {useNavigate, useMatch, Outlet, Link} from 'react-router-dom'
-import {state} from '../../state/state'
+import {useDispatch, useSelector} from 'react-redux'
 import {useLocalization} from '../../hooks/useLocalization'
 import {Typography} from '../../components/Typography/Typography'
 import {Button} from '../../components/Button/Button'
 import {withLogger} from '../../hoc/withLogger'
+import {authorize} from '../../Redux/slices/userSlice'
+import {clear} from '../../Redux/slices/publicNotesSlice'
+import {ROUTES} from '../../constants/constants'
 
 const Root = () => {
+  const isAuthorized = useSelector(state => state.user.isAuthorized)
+  const dispatch = useDispatch()
+
   // get locale, values for elements with text and handle function for locale state
   const {locale, localeValues, handleLocaleChange} = useLocalization()
 
   const navigate = useNavigate()
 
-  const navPrivate = useMatch('/private-notes')
-  const navPublic = useMatch('/public-notes')
-  const navFavorite = useMatch('/public-notes/favorite')
-  const navPassword = useMatch('/password')
+  const navPrivate = useMatch(ROUTES.PRIVATE_NOTES)
+  const navPublic = useMatch(ROUTES.PUBLIC_NOTES)
+  const navFavorite = useMatch(`${ROUTES.PUBLIC_NOTES}/${ROUTES.FAVORITE}`)
+  const navPassword = useMatch(ROUTES.CHANGE_PASSWORD)
 
   // handle click on logout icon in header
   const handleLogout = () => {
-    navigate('/login')
-    state.isAuthorized = false
-    state.user = ''
-    state.favoriteNotesIds = []
+    navigate(ROUTES.LOGIN)
+    dispatch(authorize(false))
+    dispatch(clear())
     localStorage.removeItem('token')
   }
 
   useEffect(() => {
-    if (!state.isAuthorized) {
-      navigate('/login')
+    if (!isAuthorized) {
+      navigate(ROUTES.LOGIN)
     }
-  }, [navigate])
+  }, [isAuthorized, navigate])
 
   return (
     <div className="screen__notes">
@@ -40,20 +45,22 @@ const Root = () => {
         <Button buttonClass={'logout'} type={'button'} onClick={handleLogout} />
       </div>
       <div className="notes__navigation">
-        <Link to={'/private-notes'} className={navPrivate ? 'private active' : 'private'}>
+        <Link to={ROUTES.PRIVATE_NOTES} className={navPrivate ? 'private active' : 'private'}>
           {localeValues.private}
         </Link>
-        <Link to={'/public-notes'} className={navPublic ? 'public active' : 'public'}>
+        <Link to={ROUTES.PUBLIC_NOTES} className={navPublic ? 'public active' : 'public'}>
           {localeValues.public}
         </Link>
         {(navPublic || navFavorite) && (
           <Link
-            to={'/public-notes/favorite'}
+            to={`${ROUTES.PUBLIC_NOTES}/${ROUTES.FAVORITE}`}
             className={navFavorite ? 'favorite active' : 'favorite'}>
             {localeValues.favorite}
           </Link>
         )}
-        <Link to="/password" className={navPassword ? 'change-password active' : 'change-password'}>
+        <Link
+          to={ROUTES.CHANGE_PASSWORD}
+          className={navPassword ? 'change-password active' : 'change-password'}>
           {localeValues.changePasswordScreen}
         </Link>
       </div>

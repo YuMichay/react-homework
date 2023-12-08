@@ -7,6 +7,7 @@ import {PublicNotes} from '../screens/PublicNotes/PublicNotes'
 import {FavoriteNotes} from '../screens/FavoriteNotes/FavoriteNotes'
 import {NoteDetails} from '../screens/NoteDetails/NoteDetails'
 import {ChangePassword} from '../screens/ChangePassword/ChangePassword'
+import {ROUTES} from '../constants/constants'
 
 export const router = createBrowserRouter([
   {
@@ -15,31 +16,31 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/private-notes',
+        path: ROUTES.PRIVATE_NOTES,
         element: <PrivateNotes />,
       },
       {
-        path: '/public-notes',
+        path: ROUTES.PUBLIC_NOTES,
         element: <PublicNotes />,
         children: [
           {
-            path: 'favorite',
+            path: ROUTES.FAVORITE,
             element: <FavoriteNotes />,
           },
         ],
       },
       {
-        path: '/password',
+        path: ROUTES.CHANGE_PASSWORD,
         element: <ChangePassword />,
       },
       {
-        path: '/notes/:id',
+        path: ROUTES.NOTE_DETAILS,
         element: <NoteDetails />,
       },
     ],
   },
   {
-    path: '/login',
+    path: ROUTES.LOGIN,
     element: <ProtectedLoginScreen />,
     errorElement: <ErrorPage />,
   },

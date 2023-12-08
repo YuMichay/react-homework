@@ -1,15 +1,17 @@
 import './styles.css'
 import {useState} from 'react'
 import {useNavigate, useOutletContext} from 'react-router-dom'
-import {Typography} from '../Typography/Typography'
+import {useDispatch, useSelector} from 'react-redux'
 import privateNote from '../../assets/lock.svg'
 import heartIcon from '../../assets/heart.svg'
 import heartFilledIcon from '../../assets/heart-filled.svg'
-import {Button} from '../Button/Button'
 import {SYMB_AMOUNT} from '../../constants/constants'
+import {Typography} from '../Typography/Typography'
+import {Button} from '../Button/Button'
 import {DeleteNoteModal} from '../Modals/DeleteModal/DeleteModal'
 import {CreateNoteModal} from '../Modals/CreateModal/CreateModal'
-import {state} from '../../state/state'
+import {add, remove} from '../../Redux/slices/publicNotesSlice'
+import {setId} from '../../Redux/slices/privateNotesSlice'
 
 export const Note = ({
   color,
@@ -21,6 +23,9 @@ export const Note = ({
   id,
   setIsUpdatedFavorite = null,
 }) => {
+  const favoriteNotes = useSelector(state => state.publicNotes.favoriteNotesIds)
+  const dispatch = useDispatch()
+
   const navigate = useNavigate()
 
   // get locale values for elements with text
@@ -62,23 +67,23 @@ export const Note = ({
   // DELETE MODAL: handle click on delete button
   const [isShownDeleteModal, setIsShownDeleteModal] = useState(false)
   const handleDeleteNote = () => {
+    dispatch(setId(id))
     setIsShownDeleteModal(!isShownDeleteModal)
   }
 
   // handle edit click
   const [isShownCreateModal, setIsShownCreateModal] = useState(false)
   const handleEditNote = () => {
+    dispatch(setId(id))
     setIsShownCreateModal(!isShownCreateModal)
   }
 
   // FAVORITE NOTES: ids
-  const [isFavorite, setIsFavorite] = useState(state.favoriteNotesIds.indexOf(id) !== -1)
+  const [isFavorite, setIsFavorite] = useState(favoriteNotes.indexOf(id) !== -1)
   const handleToggleFavorite = () => {
     setIsFavorite(!isFavorite)
     if (setIsUpdatedFavorite) setIsUpdatedFavorite(false)
-    isFavorite
-      ? state.favoriteNotesIds.splice(state.favoriteNotesIds.indexOf(id), 1)
-      : state.favoriteNotesIds.push(id)
+    isFavorite ? dispatch(remove(favoriteNotes.indexOf(id))) : dispatch(add(id))
   }
 
   return (
