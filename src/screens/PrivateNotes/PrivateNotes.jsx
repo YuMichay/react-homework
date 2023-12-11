@@ -1,12 +1,21 @@
 import './styles.css'
-import {useState} from 'react'
+import {ToastContainer} from 'react-toastify'
+import {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {Note} from '../../components/Note/Note'
 import {Button} from '../../components/Button/Button'
 import {CreateNoteModal} from '../../components/Modals/CreateModal/CreateModal'
-import {useSelector} from 'react-redux'
+import {getPrivateNotes} from '../../Redux/thunks/privateNotesThunk'
+import {LoadingScreen} from '../Loading/Loading'
 
 export const PrivateNotes = () => {
-  const privateNotes = useSelector(state => state.privateNotes.notes)
+  const {token} = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const {notes, isLoading, isUpdated} = useSelector(state => state.privateNotes)
+
+  useEffect(() => {
+    if (!isUpdated) dispatch(getPrivateNotes({token: token}))
+  }, [dispatch, isUpdated, token])
 
   // CREATE MODAL: handle click on add button
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -14,24 +23,22 @@ export const PrivateNotes = () => {
     setShowCreateModal(!showCreateModal)
   }
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <>
       <div className="notes__wrapper">
-        {privateNotes.length
-          ? privateNotes.map(note => (
-              <Note
-                key={note.id}
-                color={note.color}
-                isPublic={note.isPublic}
-                owner={note.owner}
-                tags={note.tags}
-                text={note.text}
-                title={note.title}
-                id={note.id}
-              />
-            ))
-          : ''}
-        <Button buttonClass={'add'} type={'button'} onClick={handleCreateNote} />
+        <ToastContainer autoClose={3000} />
+        {notes.length ? (
+          <>
+            {notes.map(note => (
+              <Note key={note.id} note={note} />
+            ))}
+            <Button buttonClass={'add'} type={'button'} onClick={handleCreateNote} />
+          </>
+        ) : (
+          ''
+        )}
       </div>
       {showCreateModal && <CreateNoteModal setModalState={setShowCreateModal} />}
     </>

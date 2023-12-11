@@ -1,23 +1,37 @@
 import './styles.css'
-import {useDispatch} from 'react-redux'
+import 'react-toastify/dist/ReactToastify.css'
+import {toast} from 'react-toastify'
+import {useDispatch, useSelector} from 'react-redux'
 import {Typography} from '../../Typography/Typography'
 import {Button} from '../../Button/Button'
 import {useLocalization} from '../../../hooks/useLocalization'
-import {remove} from '../../../Redux/slices/privateNotesSlice'
+import {deleteNote} from '../../../Redux/thunks/deleteNoteThunk'
+import {setUpdatedStatus} from '../../../Redux/slices/privateNotesSlice'
 
 export const DeleteNoteModal = ({setModalState}) => {
   const dispatch = useDispatch()
+  const {token} = useSelector(state => state.user)
+  const {currentId} = useSelector(state => state.privateNotes)
   // get values for elements with text
   const {localeValues} = useLocalization()
+
+  const notify = () => toast.success(localeValues.noteWasDeleted)
+  const err = () => toast.error(localeValues.errorNote)
 
   // handle overlay and cancel click
   const handleCancelClick = () => {
     setModalState(false)
   }
 
-  const handleConfirmClick = () => {
+  const handleConfirmClick = async () => {
     setModalState(false)
-    dispatch(remove())
+    const result = await dispatch(deleteNote({id: currentId, token: token}))
+    if (result) {
+      notify()
+      setUpdatedStatus(false)
+    } else {
+      err()
+    }
   }
 
   return (

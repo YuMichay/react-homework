@@ -1,22 +1,29 @@
 import './styles.css'
+import 'react-toastify/dist/ReactToastify.css'
+import {toast} from 'react-toastify'
 import {useState} from 'react'
 import {ChromePicker} from 'react-color'
 import publicNote from '../../../assets/unlock.svg'
 import privateNote from '../../../assets/lock.svg'
 import {Typography} from '../../Typography/Typography'
 import {Input} from '../../Input/Input'
-import {generateId} from '../../../helpers/generateId'
-import {validateTags} from '../../../helpers/validateInput'
+import {validateNote} from '../../../helpers/validateInput'
 import {Button} from '../../Button/Button'
 import {ErrorMessage} from '../../Error/Error'
 import {useLocalization} from '../../../hooks/useLocalization'
 import {useDispatch, useSelector} from 'react-redux'
-import {add, edit} from '../../../Redux/slices/privateNotesSlice'
+import {addNote} from '../../../Redux/thunks/addNoteThunk'
+import {updateNote} from '../../../Redux/thunks/updateNoteThunk'
+import {setUpdatedStatus} from '../../../Redux/slices/privateNotesSlice'
 
 export const CreateNoteModal = ({setModalState, values = {}}) => {
-  const {username} = useSelector(state => state.user)
   const dispatch = useDispatch()
+  const {token} = useSelector(state => state.user)
   const [error, setError] = useState('')
+
+  const notifyCreated = () => toast.success(localeValues.noteWasCreated)
+  const notifyEdited = () => toast.success()
+  const err = () => toast.error(localeValues.errorNote)
 
   // get values for elements with text
   const {localeValues} = useLocalization()
@@ -53,28 +60,32 @@ export const CreateNoteModal = ({setModalState, values = {}}) => {
   // set note tags
   const handleTagsChange = e => {
     const value = e.target.value
-    const validation = validateTags(value)
-    if (!validation) setError('Please check the format!')
-    else setError('')
     setTags(value)
   }
 
   // create note data
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-
-    const noteId = values.id || generateId()
     const tagsEdited = Array.isArray(tags) ? tags : tags.split(', ')
     const newNote = {
       color: color,
       isPublic: isPublic,
-      owner: username,
       tags: tagsEdited,
       text: text,
       title: title,
-      id: noteId,
     }
-    values.id ? dispatch(edit(newNote)) : dispatch(add(newNote))
+    const isValid = validateNote(newNote)
+    if (values.id && isValid) {
+      const result = await dispatch(updateNote({newNote, id: values.id, token}))
+      result ? notifyEdited() : err()
+      dispatch(setUpdatedStatus(false))
+    } else if (isValid) {
+      const result = await dispatch(addNote({newNote, token}))
+      result ? notifyCreated() : err()
+      dispatch(setUpdatedStatus(false))
+    } else {
+      setError('Invalid')
+    }
     setModalState(false)
   }
 
@@ -107,7 +118,6 @@ export const CreateNoteModal = ({setModalState, values = {}}) => {
             onChange={e => handleTagsChange(e)}
             placeholder={localeValues.tagsFormat}
           />
-          {error && <ErrorMessage message={localeValues.errorTags} />}
           <div className="create__type">
             <Typography type={'p'}>
               {isPublic ? localeValues.public : localeValues.private}
@@ -115,6 +125,7 @@ export const CreateNoteModal = ({setModalState, values = {}}) => {
             <img src={isPublic ? publicNote : privateNote} alt="lock" onClick={handleClick}></img>
           </div>
           <ChromePicker width={'180px'} color={color} onChange={handleChange} />
+          {error === 'Invalid' && <ErrorMessage message={localeValues.errorInvalid} />}
           <Button buttonClass={'submit'} type={'submit'} text={localeValues.submit} />
         </form>
       </div>

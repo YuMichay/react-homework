@@ -11,7 +11,7 @@ import {clear} from '../../Redux/slices/publicNotesSlice'
 import {ROUTES} from '../../constants/constants'
 
 const Root = () => {
-  const isAuthorized = useSelector(state => state.user.isAuthorized)
+  const {isAuthorized} = useSelector(state => state.user)
   const dispatch = useDispatch()
 
   // get locale, values for elements with text and handle function for locale state

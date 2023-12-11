@@ -12,17 +12,12 @@ import {DeleteNoteModal} from '../Modals/DeleteModal/DeleteModal'
 import {CreateNoteModal} from '../Modals/CreateModal/CreateModal'
 import {add, remove} from '../../Redux/slices/publicNotesSlice'
 import {setId} from '../../Redux/slices/privateNotesSlice'
+import {add as addNote} from '../../Redux/slices/noteSlice'
 
-export const Note = ({
-  color,
-  isPublic,
-  owner,
-  tags,
-  text,
-  title,
-  id,
-  setIsUpdatedFavorite = null,
-}) => {
+export const Note = ({note, setIsUpdatedFavorite = null}) => {
+  const {color, isPublic, owner, tags, text, title, id} = note
+  const {username} = useSelector(state => state.user)
+
   const favoriteNotes = useSelector(state => state.publicNotes.favoriteNotesIds)
   const dispatch = useDispatch()
 
@@ -61,6 +56,7 @@ export const Note = ({
 
   // NOTE DETAILS MODAL: change text and tags state and size of the note after "more" click
   const handleToggleNote = () => {
+    dispatch(addNote(note))
     navigate(`/notes/${id}`)
   }
 
@@ -103,7 +99,7 @@ export const Note = ({
         </div>
       </div>
 
-      <div style={isPublic ? publicNoteStyle : null}>
+      <div style={owner !== username ? publicNoteStyle : null}>
         <Typography type={'p'}>{textShown}</Typography>
         <Typography type={'span'}>{tagsShown}</Typography>
       </div>
@@ -115,7 +111,7 @@ export const Note = ({
         text={localeValues.readMore}
       />
 
-      {!isPublic && (
+      {owner === username && (
         <div className="note__buttons">
           <Button buttonClass={'delete'} type={'button'} onClick={handleDeleteNote} />
           <Button buttonClass={'edit'} type={'button'} onClick={handleEditNote} />
