@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 import {authorizeUser} from '../thunks/loginThunk'
+import {changePassword} from '../thunks/changePasswordThunk'
 
 export const userSlice = createSlice({
   name: 'user',
@@ -41,6 +42,9 @@ export const userSlice = createSlice({
         state.isLoading = false
         state.error = action.payload
         state.isAuthorized = false
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.password = action.payload
       })
   },
 })

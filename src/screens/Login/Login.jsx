@@ -9,7 +9,7 @@ import {useLocalization} from '../../hooks/useLocalization'
 import {withLogger} from '../../hoc/withLogger'
 import {setUser, setPassword, setError} from '../../Redux/slices/userSlice'
 import {authorizeUser} from '../../Redux/thunks/loginThunk'
-import {Loading} from '../Loading/Loading'
+import {LoadingScreen} from '../Loading/Loading'
 import {ROUTES} from '../../constants/constants'
 
 const LoginScreen = () => {
@@ -44,7 +44,9 @@ const LoginScreen = () => {
     }
   }
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <div className="screen__login">
       <Typography type={'h1'}>{localeValues.logo}</Typography>
       <form onSubmit={handleSubmit}>
@@ -53,7 +55,7 @@ const LoginScreen = () => {
           <Input inputType="username" onChange={handleUsernameChange} />
           <Input inputType="password" onChange={handlePasswordChange} />
         </div>
-        {error && <ErrorMessage message={localeValues.errorInvalid} />}
+        {error && <ErrorMessage message={localeValues.errorLogin} />}
         <Button buttonClass="submit" type="submit" disabled={!!error} text={localeValues.submit} />
         <div className="login__localization">
           <Button
@@ -74,7 +76,6 @@ const LoginScreen = () => {
           />
         </div>
       </form>
-      {isLoading && <Loading />}
     </div>
   )
 }

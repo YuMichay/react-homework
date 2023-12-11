@@ -7,33 +7,40 @@ import {Input} from '../../components/Input/Input'
 import {validatePassword} from '../../helpers/validateInput'
 import {ErrorMessage} from '../../components/Error/Error'
 import {useOutletContext} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
+import {changePassword} from '../../Redux/thunks/changePasswordThunk'
 
 export const ChangePassword = () => {
   // get values for elements with text in locale state
   const localeValues = useOutletContext()
 
-  const {password, error} = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const {password, error, token} = useSelector(state => state.user)
   const [newPassword, setNewPassword] = useState('')
 
   const notify = () => toast.success(localeValues.changedPasswordMessage)
+  const err = () => toast.error(localeValues.errorPassword)
+  const errResponse = () => toast.error(localeValues.errorNote)
 
   const handlePasswordChange = e => {
     const value = e.target.value
     setNewPassword(value)
-    console.log(value)
   }
 
-  // TODO: send request with data
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     const oldPassword = password
     const isValid = validatePassword(newPassword)
 
     if (isValid && newPassword !== oldPassword) {
-      notify()
+      const result = await dispatch(changePassword({newPassword, token}))
+      if (result) {
+        notify()
+      }
+    } else if (!isValid) {
+      err()
     } else {
-      console.log(localeValues.errorPassword)
+      errResponse()
     }
   }
 

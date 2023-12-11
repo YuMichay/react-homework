@@ -1,11 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit'
-import {mockNotes} from '../../mocks/mockData'
+import {getPublicNotes} from '../thunks/publicNoteThunk'
 
 export const publicNotesSlice = createSlice({
   name: 'publicNotes',
   initialState: {
-    notes: mockNotes.filter(note => note.isPublic),
+    notes: [],
     favoriteNotesIds: [],
+    isLoading: false,
   },
   reducers: {
     add: (state, action) => {
@@ -17,6 +18,15 @@ export const publicNotesSlice = createSlice({
     clear: state => {
       state.favoriteNotesIds = []
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(getPublicNotes.pending, state => {
+      state.isLoading = true
+    })
+    builder.addCase(getPublicNotes.fulfilled, (state, action) => {
+      state.notes = action.payload
+      state.isLoading = false
+    })
   },
 })
 export const {add, remove, clear} = publicNotesSlice.actions

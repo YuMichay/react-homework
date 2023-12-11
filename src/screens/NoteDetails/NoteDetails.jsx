@@ -1,15 +1,20 @@
 import './styles.css'
+import {useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {Typography} from '../../components/Typography/Typography'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
+import {getNoteDetails} from '../../Redux/thunks/noteDetailsThunk'
 
 export const NoteDetails = () => {
+  const dispatch = useDispatch()
   const {id} = useParams()
-  const notes = useSelector(state => state.privateNotes.notes).concat(
-    useSelector(state => state.publicNotes.notes)
-  )
-  const note = notes.find(note => note.id.toString() === id)
+  const {token} = useSelector(state => state.user)
+  const {note} = useSelector(state => state.note)
   const tags = note.tags.map(tag => `#${tag} `)
+
+  useEffect(() => {
+    dispatch(getNoteDetails({id, token}))
+  }, [dispatch, id, token])
 
   return (
     <div className="note__details">

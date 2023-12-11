@@ -22,17 +22,7 @@ export const FavoriteNotes = () => {
     <>
       {favoriteNotes.length
         ? favoriteNotes.map(note => (
-            <Note
-              key={note.id}
-              color={note.color}
-              isPublic={note.isPublic}
-              owner={note.owner}
-              tags={note.tags}
-              text={note.text}
-              title={note.title}
-              id={note.id}
-              setIsUpdatedFavorite={setIsUpdatedFavorite}
-            />
+            <Note key={note.id} note={note} setIsUpdatedFavorite={setIsUpdatedFavorite} />
           ))
         : ''}
     </>
